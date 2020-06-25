@@ -17,7 +17,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>test-blog | Hexo</title>
+  <title>记录使用github pages搭建博客 | Hexo</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -178,14 +178,46 @@
       </time>
     
 </span>
-                <h1>test-blog</h1>
+                <h1>记录使用github pages搭建博客</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<p>reggie is sb!</p>
-<p>reggie is sb!</p>
-<p>reggie is sb!</p>
-<p>reggie is sb!</p>
+      		<h3 id="一、-创建github-pages"><a href="#一、-创建github-pages" class="headerlink" title="一、 创建github pages"></a>一、 创建github pages</h3><p>1.1 创建仓库</p>
+<p><img src="../imgs1/1.png" alt="创建"><br><img src="../imgs1/2.png" alt="创建"></p>
+<p>1.2 配置ssh key</p>
+<p>由于使用hexo提交代码到github需要你git账号用户名密码，直接使用的话会很不安全，因此使用ssh key 解决客户端到服务器的连接问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查本机已存在的密钥</span></span><br><span class="line"><span class="built_in">cd</span> ~/.ssh</span><br><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>如果提示：No such file or directory 说明这是第一次使用git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置git全局用户信息</span></span><br><span class="line">git config --global user.name <span class="string">"yourName"</span></span><br><span class="line">git config --global user.email <span class="string">"yourEmail"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看ssh版本，若没有输出，就需要安装ssh</span></span><br><span class="line">ssh -V</span><br><span class="line">sudo apt-get install openssh-client openssh-server </span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成新的ssh key</span></span><br><span class="line">ssh-keygen -t rsa -C <span class="string">"sheldonXXXX@qq.com"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#生成好以后再查看密钥然后复制这一坨</span></span><br><span class="line">cat id_rsa.pub</span><br></pre></td></tr></table></figure>
+<p>此时ssh密钥生成完毕,打开github,点击settings,新建一个ssh,名字任意,然后输入刚才那一坨密钥。<br><img src="../imgs1/3.png" alt="添加密钥"></p>
+<p>添加好以后在回到本地bash输入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+<p>如果出现 Hi,你的名字! 那就是ok了</p>
+<h3 id="二、使用hexo写博客"><a href="#二、使用hexo写博客" class="headerlink" title="二、使用hexo写博客"></a>二、使用hexo写博客</h3><p>2.1 初始化安装</p>
+<p>安装hexo</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo</span><br></pre></td></tr></table></figure>
+<p>初始化,初始化完成会看到hexo自动下载了很多文件，包括node_modules</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /documents/hexo</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<p>生成博客页面,此时hexo就会在public文件夹生成html js等文件，这些文件都要提交到github：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g <span class="comment"># 生成</span></span><br><span class="line">$ hexo s <span class="comment"># 启动服务,本地预览默认开启4000端口</span></span><br></pre></td></tr></table></figure>
+<p>2.2 修改主题</p>
+<p>在<a href="https://hexo.io/themes/" target="_blank" rel="noopener">官方主题</a>这里找一个看的顺眼的主题下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在hexo目录下</span></span><br><span class="line">git <span class="built_in">clone</span> <span class="string">"你中意的主题的链接"</span> themes/主题名</span><br></pre></td></tr></table></figure>
+<p>下载好的主题都在hexo/themes中<br>最后修改_config.yml中的theme: landscape为theme: 主题名，然后重新执行hexo g来重新生成。</p>
+<p>2.3 把博客上传到github</p>
+<p>按照1中把ssh key配置好</p>
+<p>然后安装一个插件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm i -S hexo-deployer-git</span><br></pre></td></tr></table></figure>
+<p>然后修改_config.yml中的deploy:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repository: git@github.com:github名/github名.github.io</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<p>最后git bash中输入 hexo d 就可以直接把代码提交到git了</p>
+<p>2.4 常用hexo命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"postName"</span> <span class="comment">#新建文章</span></span><br><span class="line">hexo new page <span class="string">"pageName"</span> <span class="comment">#新建页面</span></span><br><span class="line">hexo generate <span class="comment">#生成静态页面至public目录</span></span><br><span class="line">hexo server <span class="comment">#开启预览访问端口（默认端口4000，'ctrl + c'关闭server）</span></span><br><span class="line">hexo deploy <span class="comment">#部署到GitHub</span></span><br><span class="line">hexo <span class="built_in">help</span>  <span class="comment"># 查看帮助</span></span><br><span class="line">hexo version  <span class="comment">#查看Hexo的版本</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 缩写</span></span><br><span class="line">hexo n == hexo new</span><br><span class="line">hexo g == hexo generate</span><br><span class="line">hexo s == hexo server</span><br><span class="line">hexo d == hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>2.5 写博客</p>
+<p>新建一个博客,然后hexo默认会生成该博客名的md文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">'test-blog'</span></span><br></pre></td></tr></table></figure>
+<p><img src="../imgs1/4.png" alt="新建博客"></p>
 
             <div class="clearfix"></div>
             <hr class="nogutter">
